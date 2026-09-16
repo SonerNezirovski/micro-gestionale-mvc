@@ -1,0 +1,16 @@
+# File temporanei di Visual Studio
+.vs/
+*.user
+*.suo
+
+# Risultati della compilazione
+[Bb]in/
+[Oo]bj/
+
+# Database locali e file di supporto SQLite
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*

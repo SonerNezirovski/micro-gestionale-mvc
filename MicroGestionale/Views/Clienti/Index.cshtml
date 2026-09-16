@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MicroGestionale.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Clienti";
+}
+
+<h1>Clienti</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Nuovo cliente
+    </a>
+</p>
+
+<p>Anagrafica dei clienti del gestionale.</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Non ci sono ancora clienti nel database.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome / Ragione sociale</th>
+                <th>Città</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Stato</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Citta</td>
+                    <td>@cliente.Email</td>
+                    <td>@cliente.Telefono</td>
+                    <td>
+                        @if (cliente.Bloccato)
+                        {
+                            <span class="badge bg-danger">Bloccato</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Attivo</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit"
+                           asp-route-id="@cliente.Id"
+                           class="btn btn-sm btn-outline-primary">
+                            Modifica
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MicroGestionale.Models;
 
@@ -28,4 +29,20 @@ public class RigaPreventivo
 
     [Range(typeof(decimal), "0", "100")]
     public decimal AliquotaIva { get; set; } = 22m;
+    [NotMapped]
+    public decimal Imponibile =>
+    Math.Round(
+        Quantita * PrezzoUnitario * (1m - ScontoPercentuale / 100m),
+        2,
+        MidpointRounding.AwayFromZero);
+
+    [NotMapped]
+    public decimal ImportoIva =>
+        Math.Round(
+            Imponibile * AliquotaIva / 100m,
+            2,
+            MidpointRounding.AwayFromZero);
+
+    [NotMapped]
+    public decimal Totale => Imponibile + ImportoIva;
 }

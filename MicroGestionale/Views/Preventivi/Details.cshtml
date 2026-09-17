@@ -1,0 +1,127 @@
+﻿@model MicroGestionale.Models.Preventivo
+
+@{
+    ViewData["Title"] = $"Preventivo {Model.Numero}";
+}
+
+<h1>Preventivo @Model.Numero</h1>
+<p>
+    <a asp-action="Stampa"
+       asp-route-id="@Model.Id"
+       class="btn btn-outline-primary">
+        Stampa / PDF
+    </a>
+</p>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Data</dt>
+            <dd class="col-sm-9">
+                @Model.Data.ToString("dd/MM/yyyy")
+            </dd>
+
+            <dt class="col-sm-3">Cliente</dt>
+            <dd class="col-sm-9">@Model.Cliente.Nome</dd>
+
+            <dt class="col-sm-3">Indirizzo</dt>
+            <dd class="col-sm-9">
+                @Model.Cliente.Indirizzo
+                @Model.Cliente.Cap
+                @Model.Cliente.Citta
+            </dd>
+
+            <dt class="col-sm-3">Valido fino al</dt>
+            <dd class="col-sm-9">
+                @(Model.ValidoFinoAl?.ToString("dd/MM/yyyy") ?? "—")
+            </dd>
+        </dl>
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Note))
+{
+    <h2 class="h5">Note</h2>
+    <p style="white-space: pre-wrap">@Model.Note</p>
+}
+
+<h2 class="h4">Righe del preventivo</h2>
+
+<p>
+    <a asp-action="AggiungiRiga"
+       asp-route-id="@Model.Id"
+       class="btn btn-primary">
+        Aggiungi riga
+    </a>
+</p>
+
+@if (!Model.Righe.Any())
+{
+    <div class="alert alert-info">
+        Questo preventivo non contiene ancora righe.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Descrizione</th>
+                    <th class="text-end">Quantità</th>
+                    <th class="text-end">Prezzo unitario (€)</th>
+                    <th class="text-end">Sconto (%)</th>
+                    <th class="text-end">IVA (%)</th>
+                    <th class="text-end">Totale (€)</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var riga in Model.Righe.OrderBy(r => r.Posizione))
+                {
+                    <tr>
+                        <td>@riga.Descrizione</td>
+                        <td class="text-end">@riga.Quantita</td>
+                        <td class="text-end">
+                            @riga.PrezzoUnitario.ToString("F2")
+                        </td>
+                        <td class="text-end">
+                            @riga.ScontoPercentuale
+                        </td>
+                        <td class="text-end">
+                            @riga.AliquotaIva
+                        </td>
+                        <td class="text-end">
+                            @riga.Totale.ToString("F2")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-8">Imponibile</dt>
+                <dd class="col-sm-4 text-end">
+                    @Model.TotaleImponibile.ToString("F2") €
+                </dd>
+
+                <dt class="col-sm-8">IVA</dt>
+                <dd class="col-sm-4 text-end">
+                    @Model.TotaleIva.ToString("F2") €
+                </dd>
+
+                <dt class="col-sm-8">Totale preventivo</dt>
+                <dd class="col-sm-4 text-end fw-bold">
+                    @Model.TotalePreventivo.ToString("F2") €
+                </dd>
+            </dl>
+        </div>
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-secondary">
+    Torna all’elenco
+</a>

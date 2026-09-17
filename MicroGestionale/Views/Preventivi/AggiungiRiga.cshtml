@@ -1,0 +1,71 @@
+﻿@model MicroGestionale.ViewModels.RigaPreventivoCreateViewModel
+
+@{
+    ViewData["Title"] = "Aggiungi riga";
+}
+
+<h1>Aggiungi riga</h1>
+
+<form asp-controller="Preventivi"
+      asp-action="AggiungiRiga"
+      method="post">
+
+    <input asp-for="PreventivoId" type="hidden" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Descrizione" class="form-label"></label>
+        <input asp-for="Descrizione" class="form-control" />
+        <span asp-validation-for="Descrizione"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Quantita" class="form-label">Quantità</label>
+        <input asp-for="Quantita" class="form-control" />
+        <span asp-validation-for="Quantita"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PrezzoUnitario" class="form-label">
+            Prezzo unitario (€)
+        </label>
+        <input asp-for="PrezzoUnitario" class="form-control" />
+        <span asp-validation-for="PrezzoUnitario"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ScontoPercentuale" class="form-label">
+            Sconto (%)
+        </label>
+        <input asp-for="ScontoPercentuale" class="form-control" />
+        <span asp-validation-for="ScontoPercentuale"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AliquotaIva" class="form-label">
+            IVA (%)
+        </label>
+        <input asp-for="AliquotaIva" class="form-control" />
+        <span asp-validation-for="AliquotaIva"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salva riga
+    </button>
+
+    <a asp-action="Details"
+       asp-route-id="@Model.PreventivoId"
+       class="btn btn-secondary">
+        Annulla
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,76 @@
+﻿@model MicroGestionale.ViewModels.PreventivoCreateViewModel
+
+@{
+    ViewData["Title"] = "Nuovo preventivo";
+}
+
+<h1>Nuovo preventivo</h1>
+
+<p>Compila i dati della testata.</p>
+
+<form asp-controller="Preventivi"
+      asp-action="Create"
+      method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Numero" class="form-label">
+            Numero preventivo
+        </label>
+        <input asp-for="Numero"
+               class="form-control"
+               placeholder="Esempio: 2026/001" />
+        <span asp-validation-for="Numero" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Data" class="form-label"></label>
+        <input asp-for="Data" class="form-control" />
+        <span asp-validation-for="Data" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ClienteId" class="form-label">Cliente</label>
+        <select asp-for="ClienteId"
+                asp-items="Model.ClientiDisponibili"
+                class="form-select">
+            <option value="">-- Seleziona un cliente --</option>
+        </select>
+        <span asp-validation-for="ClienteId"
+              class="text-danger"></span>
+
+        <div class="form-text">
+            Sono disponibili soltanto i clienti attivi.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ValidoFinoAl" class="form-label">
+            Valido fino al
+        </label>
+        <input asp-for="ValidoFinoAl" class="form-control" />
+        <span asp-validation-for="ValidoFinoAl"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Note" class="form-label"></label>
+        <textarea asp-for="Note"
+                  class="form-control"
+                  rows="3"></textarea>
+        <span asp-validation-for="Note" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salva testata
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Annulla
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

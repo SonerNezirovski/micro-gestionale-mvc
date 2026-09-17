@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 namespace MicroGestionale.Models;
 
 public class Preventivo
@@ -25,4 +25,12 @@ public class Preventivo
     public string? Note { get; set; }
 
     public List<RigaPreventivo> Righe { get; set; } = new();
+    [NotMapped]
+    public decimal TotaleImponibile => Righe.Sum(r => r.Imponibile);
+
+    [NotMapped]
+    public decimal TotaleIva => Righe.Sum(r => r.ImportoIva);
+
+    [NotMapped]
+    public decimal TotalePreventivo => TotaleImponibile + TotaleIva;
 }

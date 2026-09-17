@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MicroGestionale.Models.Preventivo>
+
+@{
+    ViewData["Title"] = "Preventivi";
+}
+
+<h1>Preventivi</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Nuovo preventivo
+    </a>
+</p>
+
+<p>Elenco dei preventivi collegati ai clienti.</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Non ci sono ancora preventivi nel database.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Data</th>
+                <th>Cliente</th>
+                <th>Valido fino al</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var preventivo in Model)
+            {
+                <tr>
+                    <td>@preventivo.Numero</td>
+                    <td>@preventivo.Data.ToString("dd/MM/yyyy")</td>
+                    <td>@preventivo.Cliente.Nome</td>
+                    <td>
+                        @(preventivo.ValidoFinoAl?.ToString("dd/MM/yyyy") ?? "—")
+                    </td>
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@preventivo.Id"
+                           class="btn btn-sm btn-outline-primary">
+                            Apri
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

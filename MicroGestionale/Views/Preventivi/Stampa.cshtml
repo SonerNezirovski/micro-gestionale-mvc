@@ -1,0 +1,241 @@
+﻿@model MicroGestionale.Models.Preventivo
+@using System.Globalization
+
+@{
+    Layout = null;
+    var italiano = CultureInfo.GetCultureInfo("it-IT");
+}
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Preventivo @Model.Numero</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #222;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .documento {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .comandi {
+            margin-bottom: 24px;
+        }
+
+            button, .comandi a {
+                display: inline-block;
+                padding: 10px 16px;
+                margin-right: 8px;
+                font: inherit;
+                cursor: pointer;
+            }
+
+        h1 {
+            margin-bottom: 24px;
+        }
+
+        .cliente {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin: 24px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        th, td {
+            padding: 9px;
+            border-bottom: 1px solid #ccc;
+            vertical-align: top;
+        }
+
+        th {
+            text-align: left;
+            background: #f2f2f2;
+        }
+
+        .numero {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .descrizione {
+            overflow-wrap: anywhere;
+        }
+
+        .totali {
+            width: 320px;
+            max-width: 100%;
+            margin: 24px 0 24px auto;
+            break-inside: avoid;
+        }
+
+            .totali p {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+            }
+
+        .totale-finale {
+            font-size: 18px;
+            border-top: 2px solid #222;
+            padding-top: 12px;
+        }
+
+        .note {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        @@page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        @@media print {
+            body {
+                padding: 0;
+                font-size: 10pt;
+            }
+
+            .comandi {
+                display: none;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tr {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="documento">
+        <div class="comandi">
+            <button type="button" onclick="window.print()">
+                Stampa / Salva PDF
+            </button>
+
+            <a asp-action="Details" asp-route-id="@Model.Id">
+                Torna al preventivo
+            </a>
+        </div>
+
+        <h1>Preventivo @Model.Numero</h1>
+
+        <p>
+            <strong>Data:</strong>
+            @Model.Data.ToString("dd/MM/yyyy")
+        </p>
+
+        @if (Model.ValidoFinoAl.HasValue)
+        {
+            <p>
+                <strong>Valido fino al:</strong>
+                @Model.ValidoFinoAl.Value.ToString("dd/MM/yyyy")
+            </p>
+        }
+
+        <div class="cliente">
+            <strong>Cliente</strong>
+            <p>
+                @Model.Cliente.Nome<br />
+                @Model.Cliente.Indirizzo<br />
+                @Model.Cliente.Cap @Model.Cliente.Citta
+                @Model.Cliente.Provincia<br />
+                @Model.Cliente.Nazione
+            </p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Cliente.PartitaIva))
+            {
+                <p>Partita IVA: @Model.Cliente.PartitaIva</p>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Cliente.CodiceFiscale))
+            {
+                <p>Codice fiscale: @Model.Cliente.CodiceFiscale</p>
+            }
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrizione</th>
+                    <th class="numero">Qtà</th>
+                    <th class="numero">Prezzo €</th>
+                    <th class="numero">Sconto %</th>
+                    <th class="numero">IVA %</th>
+                    <th class="numero">Totale €</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var riga in Model.Righe.OrderBy(r => r.Posizione))
+                {
+                    <tr>
+                        <td class="descrizione">@riga.Descrizione</td>
+                        <td class="numero">
+                            @riga.Quantita.ToString("0.###", italiano)
+                        </td>
+                        <td class="numero">
+                            @riga.PrezzoUnitario.ToString("N2", italiano)
+                        </td>
+                        <td class="numero">
+                            @riga.ScontoPercentuale.ToString("0.##", italiano)
+                        </td>
+                        <td class="numero">
+                            @riga.AliquotaIva.ToString("0.##", italiano)
+                        </td>
+                        <td class="numero">
+                            @riga.Totale.ToString("N2", italiano)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Righe.Any())
+        {
+            <p>Nessuna riga inserita.</p>
+        }
+
+        <div class="totali">
+            <p>
+                <span>Imponibile</span>
+                <span>@Model.TotaleImponibile.ToString("N2", italiano) €</span>
+            </p>
+            <p>
+                <span>IVA</span>
+                <span>@Model.TotaleIva.ToString("N2", italiano) €</span>
+            </p>
+            <p class="totale-finale">
+                <strong>Totale</strong>
+                <strong>
+                    @Model.TotalePreventivo.ToString("N2", italiano) €
+                </strong>
+            </p>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Note))
+        {
+            <h2>Note</h2>
+            <p class="note">@Model.Note</p>
+        }
+    </div>
+</body>
+</html>

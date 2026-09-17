@@ -1,17 +1,16 @@
 ﻿@model MicroGestionale.Models.Cliente
 
 @{
-    ViewData["Title"] = "Modifica cliente";
+    ViewData["Title"] = "Nuovo cliente";
 }
-
-<h1>Modifica cliente</h1>
 
 <h1>Nuovo cliente</h1>
 
 <form asp-controller="Clienti"
-      asp-action="Edit"
-      asp-route-id="@Model.Id"
+      asp-action="Create"
       method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="row">
         <div class="col-md-12 mb-3">
@@ -27,8 +26,7 @@
                 Partita IVA
             </label>
             <input asp-for="PartitaIva" class="form-control" />
-            <span asp-validation-for="PartitaIva"
-                  class="text-danger"></span>
+            <span asp-validation-for="PartitaIva" class="text-danger"></span>
         </div>
 
         <div class="col-md-6 mb-3">
@@ -36,15 +34,13 @@
                 Codice fiscale
             </label>
             <input asp-for="CodiceFiscale" class="form-control" />
-            <span asp-validation-for="CodiceFiscale"
-                  class="text-danger"></span>
+            <span asp-validation-for="CodiceFiscale" class="text-danger"></span>
         </div>
 
         <div class="col-md-12 mb-3">
             <label asp-for="Indirizzo" class="form-label"></label>
             <input asp-for="Indirizzo" class="form-control" />
-            <span asp-validation-for="Indirizzo"
-                  class="text-danger"></span>
+            <span asp-validation-for="Indirizzo" class="text-danger"></span>
         </div>
 
         <div class="col-md-4 mb-3">
@@ -62,15 +58,13 @@
         <div class="col-md-4 mb-3">
             <label asp-for="Provincia" class="form-label"></label>
             <input asp-for="Provincia" class="form-control" />
-            <span asp-validation-for="Provincia"
-                  class="text-danger"></span>
+            <span asp-validation-for="Provincia" class="text-danger"></span>
         </div>
 
         <div class="col-md-4 mb-3">
             <label asp-for="Nazione" class="form-label"></label>
             <input asp-for="Nazione" class="form-control" />
-            <span asp-validation-for="Nazione"
-                  class="text-danger"></span>
+            <span asp-validation-for="Nazione" class="text-danger"></span>
         </div>
 
         <div class="col-md-4 mb-3">
@@ -82,13 +76,12 @@
         <div class="col-md-4 mb-3">
             <label asp-for="Telefono" class="form-label"></label>
             <input asp-for="Telefono" class="form-control" />
-            <span asp-validation-for="Telefono"
-                  class="text-danger"></span>
+            <span asp-validation-for="Telefono" class="text-danger"></span>
         </div>
     </div>
 
     <button type="submit" class="btn btn-primary">
-        Salva modifiche
+        Salva cliente
     </button>
 
     <a asp-action="Index" class="btn btn-secondary">

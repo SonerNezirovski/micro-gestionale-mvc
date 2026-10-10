@@ -18,16 +18,16 @@ public class RigaPreventivo
     [StringLength(500)]
     public string Descrizione { get; set; } = string.Empty;
 
-    [Range(typeof(decimal), "0.001", "1000000")]
+    [Range(typeof(decimal), "0.001", "1000000", ParseLimitsInInvariantCulture = true)]
     public decimal Quantita { get; set; } = 1m;
 
-    [Range(typeof(decimal), "0", "1000000000")]
+    [Range(typeof(decimal), "0", "1000000000", ParseLimitsInInvariantCulture = true)]
     public decimal PrezzoUnitario { get; set; }
 
-    [Range(typeof(decimal), "0", "100")]
+    [Range(typeof(decimal), "0", "100", ParseLimitsInInvariantCulture = true)]
     public decimal ScontoPercentuale { get; set; }
 
-    [Range(typeof(decimal), "0", "100")]
+    [Range(typeof(decimal), "0", "100", ParseLimitsInInvariantCulture = true)]
     public decimal AliquotaIva { get; set; } = 22m;
     [NotMapped]
     public decimal Imponibile =>

@@ -100,6 +100,9 @@ namespace MicroGestionale.Migrations
 
                     b.HasIndex("ClienteId");
 
+                    b.HasIndex("Numero")
+                        .IsUnique();
+
                     b.ToTable("Preventivi");
                 });
 
@@ -144,7 +147,7 @@ namespace MicroGestionale.Migrations
                     b.HasOne("MicroGestionale.Models.Cliente", "Cliente")
                         .WithMany("Preventivi")
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cliente");

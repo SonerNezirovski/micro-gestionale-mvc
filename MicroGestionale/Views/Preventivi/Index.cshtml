@@ -28,6 +28,7 @@ else
                 <th>Data</th>
                 <th>Cliente</th>
                 <th>Valido fino al</th>
+                <th class="text-end">Totale (€)</th>
                 <th>Azioni</th>
             </tr>
         </thead>
@@ -40,6 +41,9 @@ else
                     <td>@preventivo.Cliente.Nome</td>
                     <td>
                         @(preventivo.ValidoFinoAl?.ToString("dd/MM/yyyy") ?? "—")
+                    </td>
+                    <td class="text-end">
+                        @preventivo.TotalePreventivo.ToString("N2")
                     </td>
                     <td>
                         <a asp-action="Details"

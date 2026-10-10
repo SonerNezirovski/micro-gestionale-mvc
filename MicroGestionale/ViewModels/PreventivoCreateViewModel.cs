@@ -5,6 +5,9 @@ namespace MicroGestionale.ViewModels;
 
 public class PreventivoCreateViewModel
 {
+    // 0 quando il preventivo è nuovo
+    public int Id { get; set; }
+
     [Required(ErrorMessage = "Inserisci il numero del preventivo.")]
     [StringLength(30)]
     public string Numero { get; set; } = string.Empty;

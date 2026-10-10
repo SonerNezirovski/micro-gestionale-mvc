@@ -31,7 +31,7 @@ public class ClientiController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Nome,PartitaIva,CodiceFiscale,Indirizzo,Cap,Citta,Provincia,Nazione,Email,Telefono")]
+        [Bind("Nome,PartitaIva,CodiceFiscale,Indirizzo,Cap,Citta,Provincia,Nazione,Email,Telefono,Bloccato")]
     Cliente cliente)
     {
         if (!ModelState.IsValid)
@@ -56,9 +56,9 @@ public class ClientiController : Controller
 
         return View(cliente);
     }
-    [HttpPost]
+    [HttpPost, ActionName(nameof(Edit))]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, IFormCollection form)
+    public async Task<IActionResult> EditPost(int id)
     {
         var cliente = await _context.Clienti.FindAsync(id);
 
@@ -79,7 +79,8 @@ public class ClientiController : Controller
             c => c.Provincia,
             c => c.Nazione,
             c => c.Email,
-            c => c.Telefono);
+            c => c.Telefono,
+            c => c.Bloccato);
 
         if (!aggiornamentoValido)
         {

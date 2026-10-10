@@ -23,7 +23,7 @@
 
     <div class="mb-3">
         <label asp-for="Quantita" class="form-label">Quantità</label>
-        <input asp-for="Quantita" class="form-control" />
+        <input asp-for="Quantita" class="form-control" inputmode="decimal" />
         <span asp-validation-for="Quantita"
               class="text-danger"></span>
     </div>
@@ -32,7 +32,7 @@
         <label asp-for="PrezzoUnitario" class="form-label">
             Prezzo unitario (€)
         </label>
-        <input asp-for="PrezzoUnitario" class="form-control" />
+        <input asp-for="PrezzoUnitario" class="form-control" inputmode="decimal" />
         <span asp-validation-for="PrezzoUnitario"
               class="text-danger"></span>
     </div>
@@ -41,7 +41,7 @@
         <label asp-for="ScontoPercentuale" class="form-label">
             Sconto (%)
         </label>
-        <input asp-for="ScontoPercentuale" class="form-control" />
+        <input asp-for="ScontoPercentuale" class="form-control" inputmode="decimal" />
         <span asp-validation-for="ScontoPercentuale"
               class="text-danger"></span>
     </div>
@@ -50,7 +50,7 @@
         <label asp-for="AliquotaIva" class="form-label">
             IVA (%)
         </label>
-        <input asp-for="AliquotaIva" class="form-control" />
+        <input asp-for="AliquotaIva" class="form-control" inputmode="decimal" />
         <span asp-validation-for="AliquotaIva"
               class="text-danger"></span>
     </div>

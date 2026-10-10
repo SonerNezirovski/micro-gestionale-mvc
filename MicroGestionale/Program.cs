@@ -1,3 +1,5 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using MicroGestionale.Data;
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,16 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// Numeri e date sempre in formato italiano (es. 12,50),
+// indipendentemente dalla lingua del PC o del browser
+var italiano = new CultureInfo("it-IT");
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(italiano),
+    SupportedCultures = new[] { italiano },
+    SupportedUICultures = new[] { italiano }
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

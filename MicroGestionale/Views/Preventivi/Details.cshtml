@@ -1,17 +1,32 @@
-﻿@model MicroGestionale.Models.Preventivo
+@model MicroGestionale.Models.Preventivo
 
 @{
     ViewData["Title"] = $"Preventivo {Model.Numero}";
 }
 
 <h1>Preventivo @Model.Numero</h1>
-<p>
+<div class="d-flex flex-wrap gap-2 mb-3">
     <a asp-action="Stampa"
        asp-route-id="@Model.Id"
        class="btn btn-outline-primary">
         Stampa / PDF
     </a>
-</p>
+
+    <a asp-action="Edit"
+       asp-route-id="@Model.Id"
+       class="btn btn-outline-secondary">
+        Modifica testata
+    </a>
+
+    <form asp-action="Delete"
+          asp-route-id="@Model.Id"
+          method="post"
+          onsubmit="return confirm('Eliminare definitivamente questo preventivo e tutte le sue righe?');">
+        <button type="submit" class="btn btn-outline-danger">
+            Elimina preventivo
+        </button>
+    </form>
+</div>
 
 <div class="card mb-4">
     <div class="card-body">
@@ -64,7 +79,7 @@
 else
 {
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped align-middle">
             <thead>
                 <tr>
                     <th>Descrizione</th>
@@ -73,6 +88,7 @@ else
                     <th class="text-end">Sconto (%)</th>
                     <th class="text-end">IVA (%)</th>
                     <th class="text-end">Totale (€)</th>
+                    <th class="text-end">Azioni</th>
                 </tr>
             </thead>
 
@@ -81,18 +97,38 @@ else
                 {
                     <tr>
                         <td>@riga.Descrizione</td>
-                        <td class="text-end">@riga.Quantita</td>
                         <td class="text-end">
-                            @riga.PrezzoUnitario.ToString("F2")
+                            @riga.Quantita.ToString("0.###")
                         </td>
                         <td class="text-end">
-                            @riga.ScontoPercentuale
+                            @riga.PrezzoUnitario.ToString("N2")
                         </td>
                         <td class="text-end">
-                            @riga.AliquotaIva
+                            @riga.ScontoPercentuale.ToString("0.##")
                         </td>
                         <td class="text-end">
-                            @riga.Totale.ToString("F2")
+                            @riga.AliquotaIva.ToString("0.##")
+                        </td>
+                        <td class="text-end">
+                            @riga.Totale.ToString("N2")
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="ModificaRiga"
+                               asp-route-id="@riga.Id"
+                               class="btn btn-sm btn-outline-primary">
+                                Modifica
+                            </a>
+
+                            <form asp-action="EliminaRiga"
+                                  asp-route-id="@riga.Id"
+                                  method="post"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Eliminare questa riga?');">
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-danger">
+                                    Elimina
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 }
@@ -105,17 +141,17 @@ else
             <dl class="row mb-0">
                 <dt class="col-sm-8">Imponibile</dt>
                 <dd class="col-sm-4 text-end">
-                    @Model.TotaleImponibile.ToString("F2") €
+                    @Model.TotaleImponibile.ToString("N2") €
                 </dd>
 
                 <dt class="col-sm-8">IVA</dt>
                 <dd class="col-sm-4 text-end">
-                    @Model.TotaleIva.ToString("F2") €
+                    @Model.TotaleIva.ToString("N2") €
                 </dd>
 
                 <dt class="col-sm-8">Totale preventivo</dt>
                 <dd class="col-sm-4 text-end fw-bold">
-                    @Model.TotalePreventivo.ToString("F2") €
+                    @Model.TotalePreventivo.ToString("N2") €
                 </dd>
             </dl>
         </div>

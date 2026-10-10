@@ -10,7 +10,7 @@
       asp-action="Create"
       method="post">
 
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row">
         <div class="col-md-12 mb-3">
@@ -77,6 +77,15 @@
             <label asp-for="Telefono" class="form-label"></label>
             <input asp-for="Telefono" class="form-control" />
             <span asp-validation-for="Telefono" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <div class="form-check">
+                <input asp-for="Bloccato" class="form-check-input" />
+                <label asp-for="Bloccato" class="form-check-label">
+                    Cliente bloccato (non può ricevere nuovi preventivi)
+                </label>
+            </div>
         </div>
     </div>
 
